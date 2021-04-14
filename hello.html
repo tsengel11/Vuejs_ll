@@ -24,8 +24,7 @@
         var vm = new Vue({
             el:'#app',
             data:{
-                asteroids: [],
-                imgTitle:''
+                asteroids: []
             },
             // Created hooks
             created: function(){
@@ -35,10 +34,10 @@
             methods:{
                 fetchAsteroids:function(){
                     var apiKey = 'vAefkwyddMLSWp55biy9RoZy4mRHyI4CEVaFBWRp'
-                    var url = 'https://api.nasa.gov/planetary/apod?api_key='+apiKey
+                    var url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2020-01-01&end_date=2020-01-06&api_key='+apiKey
                     axios.get(url)
                         .then(function(res){
-                            vm.asteroids = res.data
+                            vm.asteroids=res.data.near_earth_objects
                             })
                 }
             }
