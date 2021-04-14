@@ -24,23 +24,21 @@
         var vm = new Vue({
             el:'#app',
             data:{
-                imgSrc: '',
+                asteroids: [],
                 imgTitle:''
             },
+            // Created hooks
             created: function(){
-                this.fetchApod();
+                this.fetchAsteroids();
             },
+            //methods
             methods:{
-                process:function(){
-                    this.submitted=true;
-                },
                 fetchAsteroids:function(){
                     var apiKey = 'vAefkwyddMLSWp55biy9RoZy4mRHyI4CEVaFBWRp'
                     var url = 'https://api.nasa.gov/planetary/apod?api_key='+apiKey
                     axios.get(url)
                         .then(function(res){
-                            vm.imgSrc = res.data.url;
-                            vm.imgTitle=res.data.title;
+                            vm.asteroids = res.data
                             })
                 }
             }
