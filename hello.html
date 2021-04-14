@@ -11,7 +11,26 @@
 <div id="app">
     <div class="container">
         <div class="container">
-            <img :src="imgSrc" :title="imgTitle">
+            <div class="card">
+                <img class="card-img-top" src="bg.png" alt="">
+                <div class="card-body">
+                    <h4 class="card-title">Near Earth Objects</h4>
+                    <p class="card-text">2020/01/01-2020/01/07</p>
+                </div>
+            </div>
+            <table class="table">
+                <thead class="thead-light" >
+                        <th>Data</th>
+                        <th>Name</th>
+                        <th>Close Approach Date</th>
+                </thead>
+                <tbody>
+                    <tr v-for="a in asteroids"> 
+                        <td scope="row">{{a}}</td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -34,10 +53,11 @@
             methods:{
                 fetchAsteroids:function(){
                     var apiKey = 'vAefkwyddMLSWp55biy9RoZy4mRHyI4CEVaFBWRp'
-                    var url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2020-01-01&end_date=2020-01-06&api_key='+apiKey
+                    var url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2020-01-06&end_date=2020-01-06&api_key='+apiKey
                     axios.get(url)
                         .then(function(res){
-                            vm.asteroids=res.data.near_earth_objects
+                            vm.asteroids=res.data.near_earth_objects;
+                            console.log(res.data.near_earth_objects)
                             })
                 }
             }
