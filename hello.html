@@ -18,19 +18,26 @@
                     <p class="card-text">2020/01/01-2020/01/07</p>
                 </div>
             </div>
-            <table class="table">
-                <thead class="thead-light" >
-                        <th>Data</th>
-                        <th>Name</th>
-                        <th>Close Approach Date</th>
-                </thead>
-                <tbody>
-                    <tr v-for="a in asteroids"> 
-                        <td scope="row">{{a}}</td>
-                        <td></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div v-for="(a,index) in asteroids">
+                <h4>Date: {{index}}</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name:</th>
+                            <th>Closed Approach Date:</th>
+                            <th>Ref ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="i in a">
+                            <td scope="row">{{i.name}}</td>
+                            <td>{{getClosedApproachdate(i)}}</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
 </div>
@@ -53,12 +60,18 @@
             methods:{
                 fetchAsteroids:function(){
                     var apiKey = 'vAefkwyddMLSWp55biy9RoZy4mRHyI4CEVaFBWRp'
-                    var url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2020-01-06&end_date=2020-01-06&api_key='+apiKey
+                    var url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=2020-01-05&end_date=2020-01-06&api_key='+apiKey
                     axios.get(url)
                         .then(function(res){
                             vm.asteroids=res.data.near_earth_objects;
-                            console.log(res.data.near_earth_objects)
                             })
+                },
+                getClosedApproachdate:function(i){
+                    if(i.close_approach_data.lenght>0){
+                        return i.close_approach_data[0].close_approach_date_full;
+                    }
+                    return 'N/A'
+                  
                 }
             }
         });
