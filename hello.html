@@ -16,23 +16,38 @@
                 <div class="card-body">
                     <h4 class="card-title">Near Earth Objects</h4>
                     <p class="card-text">2020/01/01-2020/01/07</p>
+
                 </div>
             </div>
-            <div v-for="(a,index) in asteroids">
-                <h4>Date: {{index}}</h4>
+            <div v-for="(a,index1) in asteroids">
+                <h4>Date: {{index1}}</h4>
+                <h5>{{buttonText}}</h5>
+                <p> showing {{a.length}}</p>
                 <table class="table">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>Name:</th>
                             <th>Closed Approach Date:</th>
-                            <th>Ref ID</th>
+                            <th>Data</th>
+                            <th>Remove</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr v-for="i in a">
+                    <tbody v-cloak>
+                        <tr v-for="(i,index) in a" :key=a.neo_reference_id>
+                            <td>{{index+1}}<td>
                             <td scope="row">{{i.name}}</td>
                             <td>{{getClosedApproachdate(i)}}</td>
-                            <td></td>
+                            <td>
+                                <ul v-if =" i.close_approach_data.length > 0">
+                                    <li v-for ="(value,key) in i.close_approach_data[0].miss_distance" >
+                                        {{key}}: {{value}}
+                                    </li>
+                                </ul>
+                            </td>
+                            <td>
+                                <button @click="remove(index,index1)" class="btn btn-warning" >Remove</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -50,7 +65,8 @@
         var vm = new Vue({
             el:'#app',
             data:{
-                asteroids: []
+                asteroids: [],
+                buttonText:'True'
             },
             // Created hooks
             created: function(){
@@ -66,12 +82,19 @@
                             vm.asteroids=res.data.near_earth_objects;
                             })
                 },
-                getClosedApproachdate:function(i){
-                    if(i.close_approach_data.lenght>0){
+                getClosedApproachdate : function(i){
+                   if(i.close_approach_data.length>0){
                         return i.close_approach_data[0].close_approach_date_full;
-                    }
+                   }
                     return 'N/A'
-                  
+                },
+                remove: function(index,id){
+                    if (this.buttonText) {
+                        this.buttonText = false
+                        } else {
+                        this.buttonText = true
+                        }
+                    this.asteroids[id].splice(index,1)
                 }
             }
         });
